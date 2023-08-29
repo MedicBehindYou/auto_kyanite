@@ -1,2 +1,8 @@
 # Ignore Deprecated
 Deprecated/
+
+# Ignore log file
+log.txt
+
+# Ignore DB
+database.db
