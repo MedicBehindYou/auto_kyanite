@@ -12,4 +12,4 @@ WORKDIR /app
 
 COPY . /app
 
-ENTRYPOINT ["python3", "-u", "/app/script_inactivity_1.1.py"]
+ENTRYPOINT ["python3", "-u", "/app/kyanite_db.py"]
