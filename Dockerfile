@@ -1,5 +1,7 @@
 # syntax=docker/dockerfile:1
 
+# TODO: Build from scratch instead of using a previous image.
+
 FROM 192.168.0.105:8090/kyanite
 
 RUN apt-get update -y && apt-get install python3-pip -y
