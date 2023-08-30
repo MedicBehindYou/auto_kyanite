@@ -1,4 +1,4 @@
-# Current Working Version
+# TODO: Implement multi threading?
 
 import sqlite3
 import subprocess
