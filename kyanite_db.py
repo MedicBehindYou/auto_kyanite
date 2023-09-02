@@ -1,10 +1,36 @@
-# TODO: Implement multi threading?
+# kyanite_db.py
+# TODO: Introduce error logging for bad permissions
 
 import sqlite3
 import subprocess
 import threading
 import time
 from datetime import datetime
+import sys
+from logger import log
+from importer import bulk_import_tags, single_import  # Import the bulk and single import functions
+from db_setup import setup_database
+
+# Check if the "--setup" switch is provided
+if len(sys.argv) > 1 and sys.argv[1] == "--setup":
+    setup_database()
+    sys.exit()
+
+# Check if the "--bulk" switch is provided
+if len(sys.argv) > 1 and sys.argv[1] == "--bulk":
+    if len(sys.argv) > 2:
+        bulk_import_tags(sys.argv[2])  # Use the specified filename
+    else:
+        bulk_import_tags('entries.txt')  # Use the default filename
+    sys.exit()    
+
+# Check if the "--single" switch is provided
+if len(sys.argv) > 1 and sys.argv[1] == "--single":
+    if len(sys.argv) > 2:
+        single_import(sys.argv[2])  # Use the specified tag name
+    else:
+        print("Usage: --single <tag_name>")
+    sys.exit()
 
 # This creates a connection to a new or existing database file
 connection = sqlite3.connect('database.db')
@@ -13,17 +39,10 @@ connection = sqlite3.connect('database.db')
 cursor = connection.cursor()
 
 # Define the maximum inactivity time (in seconds) before considering the subprocess inactive
-MAX_INACTIVITY_TIME = 600  # Adjust this value as needed
+MAX_INACTIVITY_TIME = 1200  # Adjust this value as needed
 
 # Initialize log file
 log_file = open('log.txt', 'a')
-
-def log(message):
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    log_message = f'[{timestamp}] {message}\n'
-    print(log_message, end='')
-    log_file.write(log_message)
-    log_file.flush()
 
 def inactivity_checker(process, tag):
     while process.poll() is None:
