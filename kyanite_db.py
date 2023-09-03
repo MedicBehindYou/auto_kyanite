@@ -8,7 +8,7 @@ import time
 from datetime import datetime
 import sys
 from logger import log
-from importer import bulk_import_tags, single_import  # Import the bulk and single import functions
+from importer import bulk_import_tags, single_import
 from db_setup import setup_database
 from db_backup import create_backup, manage_backups
 
