@@ -11,6 +11,7 @@ from logger import log
 from importer import bulk_import_tags, single_import
 from db_setup import setup_database
 from db_backup import create_backup, manage_backups
+from organizer import reorder_table
 
 # Check if the "--setup" switch is provided
 if len(sys.argv) > 1 and sys.argv[1] == "--setup":
@@ -35,6 +36,13 @@ if len(sys.argv) > 1 and sys.argv[1] == "--single":
         manage_backups()
     else:
         print("Usage: --single <tag_name>")
+    sys.exit()
+
+# Check if the "--organize" switch is provided
+if len(sys.argv) > 1 and sys.argv[1] == "--organize":
+    create_backup()
+    reorder_table("database.db")
+    manage_backups()
     sys.exit()
 
 try:
