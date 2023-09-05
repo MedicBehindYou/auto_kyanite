@@ -20,7 +20,9 @@ if len(sys.argv) > 1 and sys.argv[1] == "--setup":
 # Check if the "--bulk" switch is provided
 if len(sys.argv) > 1 and sys.argv[1] == "--bulk":
     if len(sys.argv) > 2:
+        create_backup()
         bulk_import_tags(sys.argv[2])  # Use the specified filename
+        manage_backups()
     else:
         bulk_import_tags('entries.txt')  # Use the default filename
     sys.exit()    
@@ -28,7 +30,9 @@ if len(sys.argv) > 1 and sys.argv[1] == "--bulk":
 # Check if the "--single" switch is provided
 if len(sys.argv) > 1 and sys.argv[1] == "--single":
     if len(sys.argv) > 2:
+        create_backup()
         single_import(sys.argv[2])  # Use the specified tag name
+        manage_backups()
     else:
         print("Usage: --single <tag_name>")
     sys.exit()
