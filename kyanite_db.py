@@ -11,7 +11,16 @@ from logger import log
 from importer import bulk_import_tags, single_import
 from db_setup import setup_database
 from db_backup import create_backup, manage_backups
-from organizer import reorder_table
+from organize import reorder_table
+import config_loader
+
+config = config_loader.load_config()
+
+if config:
+    MAX_INACTIVITY_TIME = float(config['Subprocess']['max_inactivity_time'])  # Convert to float
+else:
+    print('Configuration not loaded. Cannot perform backup and backup management.')
+    sys.exit()
 
 # Check if the "--setup" switch is provided
 if len(sys.argv) > 1 and sys.argv[1] == "--setup":
@@ -54,9 +63,6 @@ try:
 
     # A cursor is used to execute SQL commands and fetch results.
     cursor = connection.cursor()
-
-    # Define the maximum inactivity time (in seconds) before considering the subprocess inactive
-    MAX_INACTIVITY_TIME = 1200  # Adjust this value as needed
 
     # Initialize log file
     log_file = open('log.txt', 'a')

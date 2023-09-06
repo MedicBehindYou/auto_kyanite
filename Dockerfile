@@ -8,7 +8,9 @@ RUN apt-get update -y && apt-get install python3-pip -y
 
 RUN pip install -U pip
 
-RUN pip install -U numpy scipy matplotlib pandas seaborn 
+RUN pip install -U numpy scipy matplotlib pandas seaborn
+
+RUN pip install -U configparser
 
 WORKDIR /app
 
