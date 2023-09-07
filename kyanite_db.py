@@ -1,5 +1,6 @@
 # kyanite_db.py
 # TODO: Introduce error logging for bad permissions
+# TODO: #3 add a check to see if we are being rate limited, update name of script here and in Dockerfile
 
 import sqlite3
 import subprocess
