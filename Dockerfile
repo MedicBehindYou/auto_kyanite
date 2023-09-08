@@ -16,4 +16,4 @@ WORKDIR /app
 
 COPY . /app
 
-ENTRYPOINT ["python3", "-u", "/app/kyanite_db.py"]
+ENTRYPOINT ["python3", "-u", "/app/main.py"]
