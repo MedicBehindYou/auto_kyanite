@@ -24,6 +24,6 @@ RUN pip install -U pip numpy scipy matplotlib pandas seaborn configparser --brea
 
 COPY . /app
 
-RUN mkdir /config && mv config.ini /config/config.ini && mv entries.txt /config/entries.txt && mv config.ini /config/config.ini
+RUN mkdir /config && mv config.ini /config/config.ini && mv entries.txt /config/entries.txt
 
 ENTRYPOINT ["python3", "-u", "/app/main.py"]
