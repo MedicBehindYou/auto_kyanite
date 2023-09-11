@@ -1,4 +1,6 @@
 # kyanite_db.py
+# TODO: fails if any other files are in the downloads folder
+
 
 import sqlite3
 import subprocess

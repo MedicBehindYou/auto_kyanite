@@ -26,4 +26,6 @@ COPY . /app
 
 RUN mkdir /config && mv config.ini /config/config.ini && mv entries.txt /config/entries.txt
 
+RUN chmod 777 * && cd /config && chmod 777 *
+
 ENTRYPOINT ["python3", "-u", "/app/main.py"]
