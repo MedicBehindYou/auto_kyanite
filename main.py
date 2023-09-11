@@ -1,6 +1,4 @@
 # kyanite_db.py
-# TODO: Introduce error logging for bad permissions
-# TODO: #3 add a check to see if we are being rate limited, update name of script here and in Dockerfile
 
 import sqlite3
 import subprocess
@@ -35,7 +33,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "--bulk":
         bulk_import_tags(sys.argv[2])  # Use the specified filename
         manage_backups()
     else:
-        bulk_import_tags('entries.txt')  # Use the default filename
+        bulk_import_tags('/config/entries.txt')  # Use the default filename
     sys.exit()    
 
 # Check if the "--single" switch is provided
@@ -51,7 +49,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "--single":
 # Check if the "--organize" switch is provided
 if len(sys.argv) > 1 and sys.argv[1] == "--organize":
     create_backup()
-    reorder_table("database.db")
+    reorder_table("/config/database.db")
     manage_backups()
     sys.exit()
 
@@ -60,13 +58,13 @@ try:
     create_backup()
 
     # This creates a connection to a new or existing database file
-    connection = sqlite3.connect('database.db')
+    connection = sqlite3.connect('/config/database.db')
 
     # A cursor is used to execute SQL commands and fetch results.
     cursor = connection.cursor()
 
     # Initialize log file
-    log_file = open('log.txt', 'a')
+    log_file = open('/config/log.txt', 'a')
 
     def inactivity_checker(process, tag):
         while process.poll() is None:

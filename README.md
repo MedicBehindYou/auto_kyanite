@@ -6,6 +6,8 @@ Original program here: https://gitlab.com/lu-ci/kyanite
 
 Docker container only: https://github.com/MedicBehindYou/docker_kyanite
 
+Docker Hub: https://hub.docker.com/r/medicbehindyou/auto_kyanite
+
 ## Description
 
 WARNING: This is all alpha stuff, please follow common sense when using this application.

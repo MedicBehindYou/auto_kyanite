@@ -6,7 +6,7 @@ import time
 from logger import log  # Import the log function from the logger module
 
 # Directory where backup files will be stored
-BACKUP_DIR = 'backup/'
+BACKUP_DIR = '/config/backup/'
 
 # Ensure the backup directory exists
 if not os.path.exists(BACKUP_DIR):
@@ -19,7 +19,7 @@ def create_backup():
         backup_file = f'{BACKUP_DIR}backup_{int(time.time())}.db'
         
         # Copy the current database file to the backup location
-        shutil.copy('database.db', backup_file)
+        shutil.copy('/config/database.db', backup_file)
         
         log(f'Database backed up to {backup_file}')
     except Exception as e:

@@ -7,7 +7,7 @@ from logger import log  # Import the log function from the logger module
 def setup_database():
     try:
         # Create or connect to the 'database.db' SQLite database file
-        connection = sqlite3.connect('database.db')
+        connection = sqlite3.connect('/config/database.db')
         cursor = connection.cursor()
 
         # Create the 'tags' table with the specified columns

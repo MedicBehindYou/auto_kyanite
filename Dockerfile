@@ -20,12 +20,10 @@ COPY --from=builder /usr/local/cargo/bin/kyanite /app/kyanite
 
 WORKDIR /app
 
-RUN pip install -U pip --break-system-packages
-
-RUN pip install -U numpy scipy matplotlib pandas seaborn --break-system-packages
-
-RUN pip install -U configparser --break-system-packages
+RUN pip install -U pip numpy scipy matplotlib pandas seaborn configparser --break-system-packages
 
 COPY . /app
+
+RUN mkdir /config && mv config.ini /config/config.ini && mv entries.txt /config/entries.txt
 
 ENTRYPOINT ["python3", "-u", "/app/main.py"]

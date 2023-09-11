@@ -2,7 +2,7 @@
 
 import configparser
 from logger import log
-def load_config(config_file='config.ini'):
+def load_config(config_file='/config/config.ini'):
     try:
         config = configparser.ConfigParser()
         config.read(config_file)

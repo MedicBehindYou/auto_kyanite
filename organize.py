@@ -43,5 +43,5 @@ def reorder_table(db_file):
         log(f'Error reordering the table: {str(e)}')
 
 if __name__ == "__main__":
-    db_file = "database.db"  # Replace with your database file path
+    db_file = "/config/database.db"  # Replace with your database file path
     reorder_table(db_file)

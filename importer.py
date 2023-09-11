@@ -7,7 +7,7 @@ from logger import log  # Import the log function from the logger module
 def bulk_import_tags(filename):
     try:
         # Create or connect to the 'database.db' SQLite database file
-        connection = sqlite3.connect('database.db')
+        connection = sqlite3.connect('/config/database.db')
         cursor = connection.cursor()
 
         # Read the entries from the text file and insert them into the 'tags' table
@@ -27,7 +27,7 @@ def bulk_import_tags(filename):
 def single_import(name):
     try:
         # Create or connect to the 'database.db' SQLite database file
-        connection = sqlite3.connect('database.db')
+        connection = sqlite3.connect('/config/database.db')
         cursor = connection.cursor()
 
         # Insert a single entry into the 'tags' table
@@ -43,4 +43,4 @@ def single_import(name):
         log(f'Error importing single entry "{name}": {e}')
 
 if __name__ == "__main__":
-    import_tags('entries.txt')
+    import_tags('/config/entries.txt')
