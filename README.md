@@ -1,6 +1,6 @@
 # auto_kyanite
 
-# TODO: #1 Create an entries binding, or switch to having everything in one folder. May need to recreate Docker Run command then. Fix steps marked with IMPROVE. Right now, the database.db needs to already exist, which isn't ideal.
+# TODO: # Fix steps marked with IMPROVE.
 
 Original program here: https://gitlab.com/lu-ci/kyanite
 
