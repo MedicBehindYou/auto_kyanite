@@ -1,7 +1,6 @@
 # config_loader.py
 
 import configparser
-from logger import log
 def load_config(config_file='/config/config.ini'):
     try:
         config = configparser.ConfigParser()
@@ -9,5 +8,5 @@ def load_config(config_file='/config/config.ini'):
         return config
     except Exception as e:
         error_message = f'Error loading config: {e}'
-        log(error_message)
+        print(error_message)
         return None

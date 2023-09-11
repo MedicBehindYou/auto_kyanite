@@ -18,9 +18,11 @@ import config_loader
 config = config_loader.load_config()
 
 if config:
-    MAX_INACTIVITY_TIME = float(config['Subprocess']['max_inactivity_time'])  # Convert to float
+    MAX_INACTIVITY_TIME = float(config['Main']['max_inactivity_time'])  # Convert to float
+    DATABASE_DB = (config['Import']['database_db'])
+    LOG_TXT = (config['Main']['log_txt'])    
 else:
-    print('Configuration not loaded. Cannot perform backup and backup management.')
+    log('Configuration not loaded.')
     sys.exit()
 
 # Check if the "--setup" switch is provided
@@ -51,7 +53,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "--single":
 # Check if the "--organize" switch is provided
 if len(sys.argv) > 1 and sys.argv[1] == "--organize":
     create_backup()
-    reorder_table("/config/database.db")
+    reorder_table(DATABASE_DB)
     manage_backups()
     sys.exit()
 
@@ -60,13 +62,13 @@ try:
     create_backup()
 
     # This creates a connection to a new or existing database file
-    connection = sqlite3.connect('/config/database.db')
+    connection = sqlite3.connect(DATABASE_DB)
 
     # A cursor is used to execute SQL commands and fetch results.
     cursor = connection.cursor()
 
     # Initialize log file
-    log_file = open('/config/log.txt', 'a')
+    log_file = open(LOG_TXT, 'a')
 
     def inactivity_checker(process, tag):
         while process.poll() is None:

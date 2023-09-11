@@ -1,6 +1,16 @@
 import sqlite3
 import logging
 from logger import log
+import config_loader
+
+config = config_loader.load_config()
+
+if config:
+    DATABASE_DB = (config['Organize']['database_db'])
+else:
+    log('Configuration not loaded. Cannot perform backup and backup management.')
+    sys.exit()
+
 
 def reorder_table(db_file):
     try:
@@ -43,5 +53,5 @@ def reorder_table(db_file):
         log(f'Error reordering the table: {str(e)}')
 
 if __name__ == "__main__":
-    db_file = "/config/database.db"  # Replace with your database file path
+    db_file = DATABASE_DB  # Replace with your database file path
     reorder_table(db_file)

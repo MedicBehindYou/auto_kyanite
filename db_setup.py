@@ -3,11 +3,21 @@
 import sqlite3
 import sys
 from logger import log  # Import the log function from the logger module
+import config_loader
+
+config = config_loader.load_config()
+
+if config:
+    DATABASE_DB = (config['Setup']['database_db'])
+else:
+    log('Configuration not loaded. Cannot perform backup and backup management.')
+    sys.exit()
+
 
 def setup_database():
     try:
         # Create or connect to the 'database.db' SQLite database file
-        connection = sqlite3.connect('/config/database.db')
+        connection = sqlite3.connect(DATABASE_DB)
         cursor = connection.cursor()
 
         # Create the 'tags' table with the specified columns

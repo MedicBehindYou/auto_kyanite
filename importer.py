@@ -3,11 +3,21 @@
 import sqlite3
 from datetime import datetime
 from logger import log  # Import the log function from the logger module
+import config_loader
+
+config = config_loader.load_config()
+
+if config:
+    DATABASE_DB = (config['Import']['database_db'])
+    ENTRIES_TXT = (config['Import']['entries_txt'])
+else:
+    log('Configuration not loaded. Cannot perform backup and backup management.')
+    sys.exit()
 
 def bulk_import_tags(filename):
     try:
         # Create or connect to the 'database.db' SQLite database file
-        connection = sqlite3.connect('/config/database.db')
+        connection = sqlite3.connect(DATABASE_DB)
         cursor = connection.cursor()
 
         # Read the entries from the text file and insert them into the 'tags' table
@@ -27,7 +37,7 @@ def bulk_import_tags(filename):
 def single_import(name):
     try:
         # Create or connect to the 'database.db' SQLite database file
-        connection = sqlite3.connect('/config/database.db')
+        connection = sqlite3.connect(DATABASE_DB)
         cursor = connection.cursor()
 
         # Insert a single entry into the 'tags' table
@@ -43,4 +53,4 @@ def single_import(name):
         log(f'Error importing single entry "{name}": {e}')
 
 if __name__ == "__main__":
-    import_tags('/config/entries.txt')
+    import_tags(ENTRIES_TXT)
