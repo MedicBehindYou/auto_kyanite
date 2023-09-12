@@ -14,7 +14,7 @@ from db_setup import setup_database
 from db_backup import create_backup, manage_backups
 from organize import reorder_table
 import config_loader
-
+from uncensor import uncensor
 config = config_loader.load_config()
 
 if config:
@@ -54,6 +54,13 @@ if len(sys.argv) > 1 and sys.argv[1] == "--single":
 if len(sys.argv) > 1 and sys.argv[1] == "--organize":
     create_backup()
     reorder_table(DATABASE_DB)
+    manage_backups()
+    sys.exit()
+
+# Check if the "--uncensor" switch is provided
+if len(sys.argv) > 1 and sys.argv[1] == "--uncensor":
+    create_backup()
+    uncensor(DATABASE_DB)
     manage_backups()
     sys.exit()
 
