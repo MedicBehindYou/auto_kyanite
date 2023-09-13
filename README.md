@@ -61,8 +61,18 @@ Auto_Kyanite utilizes an SQL Lite DB to store your tags and then runs kyanite it
 | --organize | Alphabetizes the tags from A-Z in the DB. |
 | --uncensor | Creates a list of tags that do not contain ",uncensored" and do not have a counterpart with ",uncensored" and adds the tags to the DB with ",uncensored" appended. |
 
+## Important but IDK where it should go
+
+- Bulk imports should be entered into a txt file with each tag on its own line. Do not include any quotes or apostrophes.
+
+- Multiple tags in a run should be entered as tag1,tag2,tag3 as a line in a bulk import or as a single i.e. --single "tag1,tag2,tag3"
+
 ## Known Issues
 
 - If you are seeing "OS Error" in your runs, check if you have anything other than the folders Kyanite generates in your /App/Download mount as that breaks Kyanite itself.
 
 - If you update your image, you may need to manually update your config.ini file as Docker will respect your version over the one it has.
+
+## Features to come
+
+- I want to implement site specific tags. As of now, each tag is run against all sites which may not be the desired outcome.
