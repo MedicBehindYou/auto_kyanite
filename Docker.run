@@ -1,1 +1,1 @@
-docker run --rm -d --init --name "auto_kyanite" -e TZ=Your/TimeZone -v "/path/tp/downloads:/app/downloads:rw" -v "/path/to/database.db:/app/database.db:rw" -v "/path/to/log.txt:/app/log.txt:rw" -v "/path/to/backup:/app/backup:rw"
+docker run --rm -d --init --name "auto_kyanite" -e TZ=Your/TimeZone -v "/path/tp/downloads:/app/downloads:rw" -v "/path/to/config:/config:rw" medicbehindyou/auto_kyanite:latest

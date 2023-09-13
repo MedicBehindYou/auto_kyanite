@@ -8,17 +8,10 @@ config = config_loader.load_config()
 if config:
     DATABASE_DB = config['Uncensor']['database_db']
 else:
-    log('Configuration not loaded. Cannot perform backup and backup management.')
+    log('Configuration not loaded.')
     sys.exit()
 
 def uncensor(DATABASE_DB):
-    # Initialize the logger
-    config = config_loader.load_config()
-    if config:
-        LOG_TXT = config['Logger']['log_txt']
-    else:
-        log('Configuration not loaded. Cannot perform backup and backup management.')
-        sys.exit()
 
     # Connect to the SQLite database
     conn = sqlite3.connect(DATABASE_DB)

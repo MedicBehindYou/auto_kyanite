@@ -11,7 +11,7 @@ if config:
     DATABASE_DB = (config['Import']['database_db'])
     ENTRIES_TXT = (config['Import']['entries_txt'])
 else:
-    log('Configuration not loaded. Cannot perform backup and backup management.')
+    log('Configuration not loaded.')
     sys.exit()
 
 def bulk_import_tags(filename):

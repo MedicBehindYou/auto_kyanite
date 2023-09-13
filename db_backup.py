@@ -15,7 +15,7 @@ if config:
     BACKUP_DIR = (config['Backup']['backup_dir'])
     DATABASE_DB = (config['Backup']['database_db'])
 else:
-    log('Configuration not loaded. Cannot perform backup and backup management.')
+    log('Configuration not loaded.')
     sys.exit()
 
 # Ensure the backup directory exists

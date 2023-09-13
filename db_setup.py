@@ -10,7 +10,7 @@ config = config_loader.load_config()
 if config:
     DATABASE_DB = (config['Setup']['database_db'])
 else:
-    log('Configuration not loaded. Cannot perform backup and backup management.')
+    log('Configuration not loaded.')
     sys.exit()
 
 
