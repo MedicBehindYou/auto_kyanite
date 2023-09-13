@@ -16,7 +16,7 @@ Auto_Kyanite utilizes an SQL Lite DB to store your tags and then runs kyanite it
 
 ## Setup Instructions 
 
-# -Build Yourself
+### -Build Yourself
 
 1. First you will need to create the container:
 
@@ -34,7 +34,7 @@ Auto_Kyanite utilizes an SQL Lite DB to store your tags and then runs kyanite it
 
 5. Presto, you should be automatically downloading your selected tags.
 
-# -Pull From Docker Hub
+### -Pull From Docker Hub
 
 1. First decide what tag you want to use:
     - thiccc: Prebuilt latest with no size reduction applied. Approximately 450 MB compressed and 1.1 GB uncompressed.
