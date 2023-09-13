@@ -1,7 +1,5 @@
 # auto_kyanite
 
-# TODO: # Fix steps marked with IMPROVE.
-
 Original program here: https://gitlab.com/lu-ci/kyanite
 
 Docker container only: https://github.com/MedicBehindYou/docker_kyanite
