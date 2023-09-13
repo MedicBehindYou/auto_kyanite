@@ -2,7 +2,7 @@
 
 Original program here: https://gitlab.com/lu-ci/kyanite
 
-Docker container only: https://github.com/MedicBehindYou/docker_kyanite
+Docker container only, no automation: https://github.com/MedicBehindYou/docker_kyanite
 
 Docker Hub: https://hub.docker.com/r/medicbehindyou/auto_kyanite
 
