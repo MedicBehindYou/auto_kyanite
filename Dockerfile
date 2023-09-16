@@ -1,7 +1,5 @@
 # syntax=docker/dockerfile:1
 
-# TODO: Build from scratch instead of using a previous image.
-
 FROM rust:latest as builder
 
 WORKDIR /app
