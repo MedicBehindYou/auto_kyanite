@@ -92,6 +92,10 @@ try:
     # Initialize log file
     log_file = open(LOG_TXT, 'a')
 
+    reverse_mode = False
+    if "-rev" in sys.argv or "--reverse" in sys.argv:
+        reverse_mode = True
+
     def inactivity_checker(process, tag):
         while process.poll() is None:
             current_time = time.time()
@@ -103,7 +107,11 @@ try:
 
     while True:
         # Get the first tag with a status of "0"
-        cursor.execute('SELECT name FROM tags WHERE complete = 0 LIMIT 1')
+        if reverse_mode:
+            cursor.execute('SELECT name FROM tags WHERE complete = 0 ORDER BY ROWID DESC LIMIT 1')
+        else:
+            cursor.execute('SELECT name FROM tags WHERE complete = 0 LIMIT 1')
+        
         row = cursor.fetchone()
 
         if row:
