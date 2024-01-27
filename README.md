@@ -20,13 +20,13 @@ Auto_Kyanite utilizes an SQL Lite DB to store your tags and then runs kyanite it
 
 1. First you will need to create the container:
 
-    gh repo clone MedicBehindYou/docker_kyanite
-    cd docker_kyanite/
-    docker build .
+    gh repo clone MedicBehindYou/docker_kyanite  
+    cd docker_kyanite/  
+    docker build .  
 
 2. This will create a local container with a random name, you can then run the container with the command example in the Docker.run file adding the name of the new container to the end. Example (Please use the command in the Docker.run file as that will have the most up-to-date syntax):
 
-    docker run --rm -d --init --name "auto_kyanite" -e TZ=Your/TimeZone -v "/path/tp/downloads:/app/downloads:rw" -v "/path/to/config:/config:rw" container_name --any_switches
+    docker run --rm -d --init --name "auto_kyanite" -e TZ=Your/TimeZone -v "/path/to/downloads:/app/downloads:rw" -v "/path/to/config:/config:rw" container_name --any_switches
 
 3. Run the container with the --setup switch to create the DB, and run --bulk to import your tags. Then if you care that they download in alphabetical order like I do, run --organize.
 
@@ -47,7 +47,7 @@ Auto_Kyanite utilizes an SQL Lite DB to store your tags and then runs kyanite it
 
 3. You can now run the container with the latest run command, i.e.:
 
-    docker run --rm -d --init --name "kyanite_db" -e TZ=America/Chicago -v "/mnt/user/Data/Plex/photos:/app/downloads:rw" -v "/mnt/user/Docker/kyanite_db:/config:rw" medicbehindyou/auto_kyanite:latest --any_switches
+    docker run --rm -d --init --name "kyanite_db" -e TZ=America/Chicago -v "/path/to/stuff:/app/downloads:rw" -v "/path/to/configs:/config:rw" medicbehindyou/auto_kyanite:latest --any_switches
 
 4. Run the container with the --setup switch to create the DB, and run --bulk to import your tags. Then if you care that they download in alphabetical order like I do, run --organize.
 
@@ -60,6 +60,7 @@ Auto_Kyanite utilizes an SQL Lite DB to store your tags and then runs kyanite it
 | --single | Imports a single tag, i.e. --single "a,tag,you,want" |
 | --organize | Alphabetizes the tags from A-Z in the DB. |
 | --uncensor | Creates a list of tags that do not contain ",uncensored" and do not have a counterpart with ",uncensored" and adds the tags to the DB with ",uncensored" appended. |
+| --reverse | Runs backwards. |
 
 ## Important but IDK where it should go
 
