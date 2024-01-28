@@ -30,7 +30,7 @@ Auto_Kyanite utilizes an SQL Lite DB to store your tags and then runs kyanite it
 
 3. Run the container with the --setup switch to create the DB, and run --bulk to import your tags. Then if you care that they download in alphabetical order like I do, run --organize.
 
-4. To start downloading, run with no switches.
+4. To start downloading, run with no switches (or run with -rev to run in reverse).
 
 5. Presto, you should be automatically downloading your selected tags.
 
@@ -70,7 +70,7 @@ Auto_Kyanite utilizes an SQL Lite DB to store your tags and then runs kyanite it
 
 ## Known Issues
 
-- If you are seeing "OS Error" in your runs, check if you have anything other than the folders Kyanite generates in your /App/Download mount as that breaks Kyanite itself.
+- If you are seeing "OS Error" in your runs, check if you have anything other than the folders Kyanite generates in your /App/Download mount as that breaks Kyanite itself. For ease of use, I reccomend doing individual mappings for sites.
 
 - If you update your image, you may need to manually update your config.ini file as Docker will respect your version over the one it has.
 
