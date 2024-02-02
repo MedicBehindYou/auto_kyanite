@@ -29,6 +29,7 @@ BACKUP_DIR = '/config/backup/'
 if config:
     BACKUP_DIR = (config['Backup']['backup_dir'])
     DATABASE_DB = (config['Backup']['database_db'])
+    BACKUP_RETENTION = int(config['Backup']['backup_retention'])
 else:
     log('Configuration not loaded.')
     sys.exit()
@@ -60,8 +61,8 @@ def manage_backups():
         backups.sort(key=lambda x: os.path.getmtime(x))
         
         # Check the number of backups
-        if len(backups) >= 5:
-            # Delete the oldest backup if there are more than five
+        if len(backups) >= BACKUP_RETENTION:
+            # Delete the oldest backup if there are more than the config.
             os.remove(backups[0])
             log(f'Oldest backup deleted: {backups[0]}')
         

@@ -18,7 +18,7 @@
 import os
 import datetime
 import config_loader
-import sys  # Import the sys module
+import sys
 
 config = config_loader.load_config()
 
