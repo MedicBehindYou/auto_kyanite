@@ -41,14 +41,15 @@ def reorder_table(db_file):
                 "id" INTEGER PRIMARY KEY AUTOINCREMENT,
                 "name" TEXT,
                 "complete" INTEGER DEFAULT 0,
-                "date" INTEGER
+                "date" INTEGER,
+                "running" INTEGER DEFAULT 0
             )
         ''')
 
         # Insert data from the original table into the new table, ordering by "name"
         cursor.execute('''
-            INSERT INTO "tags_new" ("name", "complete", "date")
-            SELECT "name", "complete", "date" FROM "tags"
+            INSERT INTO "tags_new" ("name", "complete", "date", "running")
+            SELECT "name", "complete", "date", "running" FROM "tags"
             ORDER BY "name" ASC
         ''')
 
@@ -70,5 +71,5 @@ def reorder_table(db_file):
         log(f'Error reordering the table: {str(e)}')
 
 if __name__ == "__main__":
-    db_file = DATABASE_DB  # Replace with your database file path
+    db_file = DATABASE_DB 
     reorder_table(db_file)

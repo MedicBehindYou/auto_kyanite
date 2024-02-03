@@ -128,17 +128,18 @@ try:
     while True:
         # Get the first tag with a status of "0"
         if reverse_mode:
-            cursor.execute('SELECT name FROM tags WHERE complete = 0 ORDER BY ROWID DESC LIMIT 1')
+            cursor.execute('SELECT name FROM tags WHERE complete = 0 AND running <> 1 ORDER BY ROWID DESC LIMIT 1')
         else:
-            cursor.execute('SELECT name FROM tags WHERE complete = 0 LIMIT 1')
+            cursor.execute('SELECT name FROM tags WHERE complete = 0 AND running <> 1 LIMIT 1')
         
         row = cursor.fetchone()
 
         if row:
-            tag = row[0]  # Assuming the "name" column is the first column in the query result
+            tag = row[0]
             log(f'Starting processing tag: {tag}')
+            cursor.execute("UPDATE tags SET running = '1' WHERE name = ?", row)
         else:
-            update_query = "UPDATE tags SET complete = 0;"
+            update_query = "UPDATE tags SET complete = 0 WHERE running != 1;"
             cursor.execute(update_query)
             connection.commit()
             log('All tags processed. Resetting for a new run.')
@@ -171,16 +172,15 @@ try:
         if process.returncode == 0:
             try:
                 current_timestamp = datetime.now()  # Get the current timestamp
-                cursor.execute("BEGIN")
                 cursor.execute("UPDATE tags SET complete = 1, date = ? WHERE name = ?", (current_timestamp, tag))
-                cursor.execute("COMMIT")
+                cursor.execute("UPDATE tags SET running = '0' WHERE name = ?", row)
                 log(f'Tag "{tag}" processed successfully.')
             except Exception as e:
                 cursor.execute("ROLLBACK")
                 error_message = f'Error processing tag "{tag}": {e}'
                 log(error_message)
-
-            connection.commit()
+            else:
+                connection.commit()
         elif process.returncode is not None:
             log(f'Subprocess for tag "{tag}" was terminated with return code: {process.returncode}')    
 
