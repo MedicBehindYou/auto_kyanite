@@ -21,15 +21,18 @@ import sqlite3
 import subprocess
 import threading
 import time
-from datetime import datetime
 import sys
+import os
+import config_loader
+from datetime import datetime
 from logger import log
 from importer import bulk_import_tags, single_import
 from db_setup import setup_database
 from db_backup import create_backup, manage_backups
 from organize import reorder_table
-import config_loader
 from uncensor import uncensor
+from db_migration import has_version_table, current_version, migrate
+
 config = config_loader.load_config()
 
 if config:
@@ -39,6 +42,23 @@ if config:
 else:
     log('Configuration not loaded.')
     sys.exit()
+
+if not os.path.exists(DATABASE_DB):
+    setup_database()
+
+
+if not has_version_table(DATABASE_DB):
+    migrate()
+if current_version() != "1.0.0":
+    migrateYN = input('DB is currently out of date. Run migration (y/n): ')
+    if migrateYN == 'y' or migrateYN == 'Y':
+        migrate()
+    elif migrateYN == 'n' or migrateYN == 'N':
+        print('Migration canceled, closing.')
+        sys.exit()
+    else:
+        print('Invalid option.')
+        sys.exit()  
 
 # Check if the "--setup" switch is provided
 if len(sys.argv) > 1 and sys.argv[1] == "--setup":

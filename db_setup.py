@@ -17,7 +17,7 @@
 
 import sqlite3
 import sys
-from logger import log  # Import the log function from the logger module
+from logger import log
 import config_loader
 
 config = config_loader.load_config()

@@ -3,6 +3,7 @@ import os
 from logger import log
 import config_loader
 import sys
+from db_backup import create_backup, manage_backups
 
 config = config_loader.load_config()
 
@@ -27,53 +28,68 @@ def has_version_table(DATABASE_DB):
 
     return version_table_exists
 
-try:
-    if not has_version_table(DATABASE_DB):
-        log(f'Creating new versions table: {DATABASE_DB}')
-        conn = sqlite3.connect(DATABASE_DB)
-        cursor = conn.cursor()
-
-        # Create the version table
-        cursor.execute('''
-            CREATE TABLE version (
-                id INTEGER PRIMARY KEY,
-                version TEXT
-            )
-        ''')
-
-        # Insert initial version data
-        cursor.execute("INSERT INTO version (version) VALUES ('0.0.0')")
-
-        # Commit changes and close connection
-        conn.commit()
-        conn.close()
-
-except Exception as e:
-    log('DB Version Detection Error: {str(e)}')
-    conn.close()
-    sys.exit()
-
-try:
+def current_version():
     conn = sqlite3.connect(DATABASE_DB)
     cursor = conn.cursor()
-    # Execute a query to select the version from the version table
+
     cursor.execute("SELECT version FROM version WHERE id = 1")
-
     version = cursor.fetchone()[0]
+    return version
 
-    if version == "0.0.0":
-        cursor.execute('''ALTER TABLE tags ADD COLUMN running INTEGER DEFAULT 0''')
-        cursor.execute("UPDATE version SET version = ('1.0.0') WHERE id = 1")
+def migrate():
+    try:
+        if not has_version_table(DATABASE_DB):
+            create_backup()
+            log(f'Creating new versions table: {DATABASE_DB}')
 
-        conn.commit()
+            conn = sqlite3.connect(DATABASE_DB)
+            cursor = conn.cursor()
+
+            # Create the version table
+            cursor.execute('''
+                CREATE TABLE version (
+                    id INTEGER PRIMARY KEY,
+                    version TEXT
+                )
+            ''')
+
+            # Insert initial version data
+            cursor.execute("INSERT INTO version (version) VALUES ('0.0.0')")
+
+            # Commit changes and close connection
+            conn.commit()
+            conn.close()
+
+    except Exception as e:
+        log('DB Version Detection Error: ', e)
         conn.close()
-        
-        log('DB upgraded from 0.0.0 to 1.0.0')
-    else:
-        log('No available migrations.')
+        sys.exit()
 
-except sqlite3.Error as e:
-    log("Error reading data from SQLite table:", e)
+    try:
+        conn = sqlite3.connect(DATABASE_DB)
+        cursor = conn.cursor()
+        # Execute a query to select the version from the version table
+        cursor.execute("SELECT version FROM version WHERE id = 1")
 
-finally:
-    conn.close()
+        version = cursor.fetchone()[0]
+
+        if version == "0.0.0":
+            create_backup()
+            cursor.execute('''ALTER TABLE tags ADD COLUMN running INTEGER DEFAULT 0''')
+            cursor.execute("UPDATE version SET version = ('1.0.0') WHERE id = 1")
+
+            conn.commit()
+            conn.close()
+            
+            log('DB upgraded from 0.0.0 to 1.0.0')
+        else:
+            log('No available migrations.')
+
+    except sqlite3.Error as e:
+        log("Error reading data from SQLite table:", e)
+
+    finally:
+        conn.close()
+
+if __name__ == "__main__":
+    migrate()
