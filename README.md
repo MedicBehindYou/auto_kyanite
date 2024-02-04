@@ -28,7 +28,7 @@ Auto_Kyanite utilizes an SQL Lite DB to store your tags and then runs kyanite it
 
     docker run --rm -d --init --name "auto_kyanite" -e TZ=Your/TimeZone -v "/path/to/downloads:/app/downloads:rw" -v "/path/to/config:/config:rw" container_name --any_switches
 
-3. Run the container with the --setup switch to create the DB, and run --bulk to import your tags. Then if you care that they download in alphabetical order like I do, run --organize.
+3. Run the container with any switch or with no switch to create the DB and complete the first migration, and run --bulk to import your tags. Then if you care that they download in alphabetical order like I do, run --organize.
 
 4. To start downloading, run with no switches (or run with -rev to run in reverse).
 
@@ -49,13 +49,13 @@ Auto_Kyanite utilizes an SQL Lite DB to store your tags and then runs kyanite it
 
     docker run --rm -d --init --name "kyanite_db" -e TZ=America/Chicago -v "/path/to/stuff:/app/downloads:rw" -v "/path/to/configs:/config:rw" medicbehindyou/auto_kyanite:latest --any_switches
 
-4. Run the container with the --setup switch to create the DB, and run --bulk to import your tags. Then if you care that they download in alphabetical order like I do, run --organize.
+4. Run the container with any switch or with no switch to create the DB and complete the first migration, and run --bulk to import your tags. Then if you care that they download in alphabetical order like I do, run --organize.
 
 ## Switches
 
 | Switch | Description |
 | :----- | :---------- |
-| --setup | Creates the "database.db" file for the program to use. |
+| --setup | Creates the "database.db" file for the program to use. Deprecated, now done automatically.|
 | --bulk | By default imports all tags in the file '/config/entries.txt' but can be run with a custome filepath. |
 | --single | Imports a single tag, i.e. --single "a,tag,you,want" |
 | --organize | Alphabetizes the tags from A-Z in the DB. |

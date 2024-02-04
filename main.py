@@ -138,6 +138,7 @@ try:
             tag = row[0]
             log(f'Starting processing tag: {tag}')
             cursor.execute("UPDATE tags SET running = '1' WHERE name = ?", row)
+            connection.commit()
         else:
             update_query = "UPDATE tags SET complete = 0 WHERE running != 1;"
             cursor.execute(update_query)
