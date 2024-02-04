@@ -50,6 +50,14 @@ def reorder_table(db_file):
         cursor.execute('''
             INSERT INTO "tags_new" ("name", "complete", "date", "running")
             SELECT "name", "complete", "date", "running" FROM "tags"
+            WHERE "name" NOT LIKE '%uncensored%'
+            ORDER BY "name" ASC
+        ''')
+
+        cursor.execute('''
+            INSERT INTO "tags_new" ("name", "complete", "date", "running")
+            SELECT "name", "complete", "date", "running" FROM "tags"
+            WHERE "name" LIKE '%uncensored%'
             ORDER BY "name" ASC
         ''')
 
