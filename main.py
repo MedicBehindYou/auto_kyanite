@@ -192,7 +192,8 @@ try:
 
 finally:
     # Manage Backups before exiting
-    cursor.execute("UPDATE tags SET running = '0' WHERE name = ?", row)
+    if row:
+        cursor.execute("UPDATE tags SET running = '0' WHERE name = ?", row)
     connection.commit()
     manage_backups()
 
