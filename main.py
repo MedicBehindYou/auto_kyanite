@@ -34,6 +34,7 @@ from uncensor import uncensor
 from db_migration import has_version_table, current_version, migrate
 
 config = config_loader.load_config()
+row_lock = threading.Lock()
 
 if config:
     MAX_INACTIVITY_TIME = float(config['Main']['max_inactivity_time'])  # Convert to float
@@ -121,18 +122,22 @@ try:
             current_time = time.time()
             if current_time - subprocess_start_time > MAX_INACTIVITY_TIME:
                 log(f'Subprocess for tag "{tag}" closed due to inactivity.')
+                with row_lock:
+                    cursor.execute("UPDATE tags SET running = '0' WHERE name = ?", row)
+                    connection.commit()
                 process.kill()
                 break
             time.sleep(1)
 
     while True:
         # Get the first tag with a status of "0"
-        if reverse_mode:
-            cursor.execute('SELECT name FROM tags WHERE complete = 0 AND running <> 1 ORDER BY ROWID DESC LIMIT 1')
-        else:
-            cursor.execute('SELECT name FROM tags WHERE complete = 0 AND running <> 1 LIMIT 1')
-        
-        row = cursor.fetchone()
+        with row_lock:
+            if reverse_mode:
+                cursor.execute('SELECT name FROM tags WHERE complete = 0 AND running <> 1 ORDER BY ROWID DESC LIMIT 1')
+            else:
+                cursor.execute('SELECT name FROM tags WHERE complete = 0 AND running <> 1 LIMIT 1')
+            
+            row = cursor.fetchone()
 
         if row:
             tag = row[0]
@@ -187,6 +192,8 @@ try:
 
 finally:
     # Manage Backups before exiting
+    cursor.execute("UPDATE tags SET running = '0' WHERE name = ?", row)
+    connection.commit()
     manage_backups()
 
     connection.close()

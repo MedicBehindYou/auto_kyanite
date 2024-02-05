@@ -1,5 +1,5 @@
-# Ignore Deprecated
-Deprecated/
+# Ignore Testing
+testing/
 
 # Ignore log file
 log.txt
