@@ -15,8 +15,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# TODO: fails if any other files are in the downloads folder
-
 import sqlite3
 import subprocess
 import threading
