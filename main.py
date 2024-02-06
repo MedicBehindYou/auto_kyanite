@@ -98,6 +98,10 @@ if len(sys.argv) > 1 and sys.argv[1] == "--uncensor":
     manage_backups()
     sys.exit()
 
+reverse_mode = False
+if "-rev" in sys.argv or "--reverse" in sys.argv:
+    reverse_mode = True
+
 try:
     # Create a backup at the start of the script's run
     create_backup()
@@ -110,10 +114,6 @@ try:
 
     # Initialize log file
     log_file = open(LOG_TXT, 'a')
-
-    reverse_mode = False
-    if "-rev" in sys.argv or "--reverse" in sys.argv:
-        reverse_mode = True
 
     def inactivity_checker(process, tag):
         while process.poll() is None:
