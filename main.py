@@ -59,39 +59,34 @@ if current_version() != "1.0.0":
         print('Invalid option.')
         sys.exit()  
 
-# Check if the "--setup" switch is provided
 if len(sys.argv) > 1 and sys.argv[1] == "--setup":
     setup_database()
     sys.exit()
 
-# Check if the "--bulk" switch is provided
 if len(sys.argv) > 1 and sys.argv[1] == "--bulk":
     if len(sys.argv) > 2:
         create_backup()
-        bulk_import_tags(sys.argv[2])  # Use the specified filename
+        bulk_import_tags(sys.argv[2]) 
         manage_backups()
     else:
-        bulk_import_tags('/config/entries.txt')  # Use the default filename
+        bulk_import_tags('/config/entries.txt') 
     sys.exit()    
 
-# Check if the "--single" switch is provided
 if len(sys.argv) > 1 and sys.argv[1] == "--single":
     if len(sys.argv) > 2:
         create_backup()
-        single_import(sys.argv[2])  # Use the specified tag name
+        single_import(sys.argv[2]) 
         manage_backups()
     else:
         print("Usage: --single <tag_name>")
     sys.exit()
 
-# Check if the "--organize" switch is provided
 if len(sys.argv) > 1 and sys.argv[1] == "--organize":
     create_backup()
     reorder_table(DATABASE_DB)
     manage_backups()
     sys.exit()
 
-# Check if the "--uncensor" switch is provided
 if len(sys.argv) > 1 and sys.argv[1] == "--uncensor":
     create_backup()
     uncensor(DATABASE_DB)
@@ -103,16 +98,12 @@ if "-rev" in sys.argv or "--reverse" in sys.argv:
     reverse_mode = True
 
 try:
-    # Create a backup at the start of the script's run
     create_backup()
 
-    # This creates a connection to a new or existing database file
     connection = sqlite3.connect(DATABASE_DB)
 
-    # A cursor is used to execute SQL commands and fetch results.
     cursor = connection.cursor()
 
-    # Initialize log file
     log_file = open(LOG_TXT, 'a')
 
     def inactivity_checker(process, tag):
@@ -128,7 +119,6 @@ try:
             time.sleep(1)
 
     while True:
-        # Get the first tag with a status of "0"
         with row_lock:
             if reverse_mode:
                 cursor.execute('SELECT name FROM tags WHERE complete = 0 AND running <> 1 ORDER BY ROWID DESC LIMIT 1')
@@ -149,16 +139,13 @@ try:
             log('All tags processed. Resetting for a new run.')
             break
 
-        # Bash command to execute
         command = ["/app/kyanite", "-t", tag]
 
         log(f'Starting subprocess for tag: {tag}')
 
-        # Execute the Bash command and capture the output
         process = subprocess.Popen(command, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
         subprocess_start_time = time.time()
 
-        # Start the inactivity checker thread
         inactivity_thread = threading.Thread(target=inactivity_checker, args=(process, tag))
         inactivity_thread.start()
 
@@ -166,16 +153,14 @@ try:
             print(line, end='')
             subprocess_start_time = time.time()
 
-        # Wait for the subprocess to finish and join the inactivity checker thread
         process.wait()
         inactivity_thread.join()
 
         log(f'Subprocess for tag "{tag}" finished with return code: {process.returncode}')
 
-        # Only update database if subprocess completed without being killed by inactivity checker
         if process.returncode == 0:
             try:
-                current_timestamp = datetime.now()  # Get the current timestamp
+                current_timestamp = datetime.now()
                 cursor.execute("UPDATE tags SET complete = 1, date = ? WHERE name = ?", (current_timestamp, tag))
                 cursor.execute("UPDATE tags SET running = '0' WHERE name = ?", row)
                 log(f'Tag "{tag}" processed successfully.')
@@ -189,7 +174,6 @@ try:
             log(f'Subprocess for tag "{tag}" was terminated with return code: {process.returncode}')    
 
 finally:
-    # Manage Backups before exiting
     if row:
         cursor.execute("UPDATE tags SET running = '0' WHERE name = ?", row)
     connection.commit()

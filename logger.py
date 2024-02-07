@@ -24,7 +24,7 @@ config = config_loader.load_config()
 
 if config:
     LOG_TXT = (config['Logger']['log_txt'])
-    LOG_SIZE = int(config['Logger']['log_size'])  # Convert LOG_SIZE to an integer
+    LOG_SIZE = int(config['Logger']['log_size'])
 else:
     log('Configuration not loaded.')
     sys.exit()
