@@ -111,9 +111,6 @@ try:
             current_time = time.time()
             if current_time - subprocess_start_time > MAX_INACTIVITY_TIME:
                 log(f'Subprocess for tag "{tag}" closed due to inactivity.')
-                with row_lock:
-                    cursor.execute("UPDATE tags SET running = '0' WHERE name = ?", row)
-                    connection.commit()
                 process.kill()
                 break
             time.sleep(1)
@@ -169,6 +166,10 @@ try:
                 error_message = f'Error processing tag "{tag}": {e}'
                 log(error_message)
             else:
+                connection.commit()
+        elif process.returncode == -9:
+            with row_lock:
+                cursor.execute("UPDATE tags SET running = '0' WHERE name = ?", row)
                 connection.commit()
         elif process.returncode is not None:
             log(f'Subprocess for tag "{tag}" was terminated with return code: {process.returncode}')    
