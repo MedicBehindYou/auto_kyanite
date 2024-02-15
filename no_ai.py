@@ -1,4 +1,4 @@
-# uncensor.py
+# no_ai.py
 #    auto_kyanite
 #    Copyright (C) 2023  MedicBehindYou
 #
@@ -23,12 +23,12 @@ from logger import log
 
 config = config_loader.load_config()
 if config:
-    DATABASE_DB = config['Uncensor']['database_db']
+    DATABASE_DB = config['No_AI']['database_db']
 else:
     log('Configuration not loaded.')
     sys.exit()
 
-def uncensor(DATABASE_DB):
+def no_ai(DATABASE_DB):
 
     conn = sqlite3.connect(DATABASE_DB)
     cursor = conn.cursor()
@@ -37,30 +37,30 @@ def uncensor(DATABASE_DB):
     tags = cursor.fetchall()
 
     unique_tags = set()
-    tags_with_uncensored = set()
+    tags_with_no_ai = set()
 
     for row in tags:
         tag = row[0]
-        if 'uncensored' in tag:
+        if '-ai_generated' in tag:
             sep = tag.split(',')
-            sep.remove('uncensored')
+            sep.remove('-ai_generated')
             normalized_tag = ','.join(sep)
-            tags_with_uncensored.add(normalized_tag)
+            tags_with_no_ai.add(normalized_tag)
         else:
             unique_tags.add(tag)
 
 
-    unique_tags -= tags_with_uncensored
+    unique_tags -= tags_with_no_ai
 
     for tag in unique_tags:
-        new_tag = tag + ',uncensored'
+        new_tag = tag + ',-ai_generated'
         cursor.execute("INSERT INTO tags (name) VALUES (?)", (new_tag,))
 
     conn.commit()
 
     conn.close()
 
-    log('Unique tags without \',uncensored\' suffix added to the database.')
+    log('Unique tags without \',-ai_generated\' suffix added to the database.')
 
 if __name__ == "__main__":
-    uncensor(DATABASE_DB)
+    no_ai(DATABASE_DB)

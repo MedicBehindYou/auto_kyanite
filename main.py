@@ -30,6 +30,7 @@ from db_backup import create_backup, manage_backups
 from organize import reorder_table
 from uncensor import uncensor
 from db_migration import has_version_table, current_version, migrate
+from no_ai import no_ai
 
 config = config_loader.load_config()
 row_lock = threading.Lock()
@@ -90,6 +91,12 @@ if len(sys.argv) > 1 and sys.argv[1] == "--organize":
 if len(sys.argv) > 1 and sys.argv[1] == "--uncensor":
     create_backup()
     uncensor(DATABASE_DB)
+    manage_backups()
+    sys.exit()
+
+if len(sys.argv) > 1 and sys.argv[1] == "--no_ai":
+    create_backup()
+    no_ai(DATABASE_DB)
     manage_backups()
     sys.exit()
 

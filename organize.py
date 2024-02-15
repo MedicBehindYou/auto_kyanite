@@ -16,7 +16,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sqlite3
-import logging
 from logger import log
 import config_loader
 
