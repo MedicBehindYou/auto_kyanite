@@ -175,9 +175,9 @@ try:
             log(f'Subprocess for tag "{tag}" was terminated with return code: {process.returncode}')    
 
 finally:
-    if row:
+    if row is not None:
         cursor.execute("UPDATE tags SET running = '0' WHERE name = ?", row)
-    connection.commit()
+        connection.commit()
     manage_backups()
 
     connection.close()

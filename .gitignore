@@ -1,8 +1,4 @@
-# Ignore Testing
 testing/
-
-# Ignore log file
 log.txt
-
-# Ignore DB
 database.db
+__pycache__/
