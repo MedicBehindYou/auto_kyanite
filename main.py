@@ -167,6 +167,7 @@ try:
                 current_timestamp = datetime.now()
                 cursor.execute("UPDATE tags SET complete = 1, date = ? WHERE name = ?", (current_timestamp, tag))
                 cursor.execute("UPDATE tags SET running = '0' WHERE name = ?", row)
+                connection.commit()
                 log(f'Tag "{tag}" processed successfully.')
             except Exception as e:
                 cursor.execute("ROLLBACK")
@@ -180,6 +181,9 @@ try:
                 connection.commit()
         elif process.returncode is not None:
             log(f'Subprocess for tag "{tag}" was terminated with return code: {process.returncode}')    
+        else:
+            cursor.execute("UPDATE tags SET running = '0' WHERE name = ?", row)
+            connection.commit()
 
 finally:
     if row is not None:
